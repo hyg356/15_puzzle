@@ -33,11 +33,12 @@ def find_empty_spot(board):
 
 # --------------- check if solved ----------------------
 def is_solved(board):
-    if board==[[1, 2, 3, 4],
-              [5, 6, 7, 8],
-              [9, 10, 11, 12],
-              [13, 14, 15, 0]]:
-        return True
+    return board == [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 0]
+    ]
 
 # --------------- shuffle board -------------------------
 
@@ -79,7 +80,8 @@ def is_adjacent(i, j, ei, ej):
     return abs(i - ei) + abs(j - ej) == 1
 # ---------------------------------- session state ------------------------------------------------------------
 
-if "board" not in st.session_state:
+if "started" not in st.session_state:
+    st.session_state.started = True
     st.session_state.board = init_board()
     shuffle_board(st.session_state.board)
 
