@@ -43,37 +43,30 @@ def is_solved(board):
 
 def shuffle_board(board):
     for _ in range(200):
-        moved = False
         for row in range(4):
             for col in range(4):
                 if board[row][col] == 0:
-    
 
-                    
-                    if row == 0 and col == 0:
-                        new_row, new_col = random.choice([(1,0),(0,1)])
-                    elif row == 0 and col == 3:
-                        new_row, new_col = random.choice([(0,2),(1,3)])
-                    elif row == 3 and col == 0:
-                        new_row, new_col = random.choice([(2,0),(3,1)])
-                    elif row == 3 and col == 3:
-                        new_row, new_col = random.choice([(2,3),(3,2)])
-                    elif row == 0:
-                        new_row, new_col = random.choice([(0,col-1),(0,col+1),(1,col)])
-                    elif row == 3:
-                        new_row, new_col = random.choice([(3,col-1),(3,col+1),(2,col)])
-                    elif col == 0:
-                        new_row, new_col = random.choice([(row+1,col),(row-1,col),(row,col+1)])
-                    elif col == 3:
-                        new_row, new_col = random.choice([(row+1,col),(row-1,col),(row,col-1)])
-                    else:
-                        new_row, new_col = random.choice([(row+1,col),(row-1,col),(row,col+1),(row,col-1)])
+                    neighbors = []
 
-                    board[row][col], board[new_row][new_col] = board[new_row][new_col], 0
-                    moved = True
+                    if row > 0:
+                        neighbors.append((row - 1, col))
+                    if row < 3:
+                        neighbors.append((row + 1, col))
+                    if col > 0:
+                        neighbors.append((row, col - 1))
+                    if col < 3:
+                        neighbors.append((row, col + 1))
+
+                    new_row, new_col = random.choice(neighbors)
+                    board[row][col], board[new_row][new_col] = (
+                        board[new_row][new_col],
+                        board[row][col],
+                    )
                     break
-            if moved:
-                break
+            else:
+                continue
+            break
             
 # ----------------------------------- find empty -------------------------------------------------------------------
 def find_empty(board):
