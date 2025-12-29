@@ -42,32 +42,25 @@ def is_solved(board):
 
 # --------------- shuffle board -------------------------
 
-def shuffle_board(board):
-    for _ in range(200):
-        for row in range(4):
-            for col in range(4):
-                if board[row][col] == 0:
+def shuffle_board(board, moves=60):
+    # find empty spot once
+    ei, ej = find_empty(board)
 
-                    neighbors = []
+    for _ in range(moves):
+        neighbors = []
 
-                    if row > 0:
-                        neighbors.append((row - 1, col))
-                    if row < 3:
-                        neighbors.append((row + 1, col))
-                    if col > 0:
-                        neighbors.append((row, col - 1))
-                    if col < 3:
-                        neighbors.append((row, col + 1))
+        if ei > 0:
+            neighbors.append((ei - 1, ej))
+        if ei < 3:
+            neighbors.append((ei + 1, ej))
+        if ej > 0:
+            neighbors.append((ei, ej - 1))
+        if ej < 3:
+            neighbors.append((ei, ej + 1))
 
-                    new_row, new_col = random.choice(neighbors)
-                    board[row][col], board[new_row][new_col] = (
-                        board[new_row][new_col],
-                        board[row][col],
-                    )
-                    break
-            else:
-                continue
-            break
+        ni, nj = random.choice(neighbors)
+        board[ei][ej], board[ni][nj] = board[ni][nj], board[ei][ej]
+        ei, ej = ni, nj
             
 # ----------------------------------- find empty -------------------------------------------------------------------
 def find_empty(board):
@@ -80,8 +73,7 @@ def is_adjacent(i, j, ei, ej):
     return abs(i - ei) + abs(j - ej) == 1
 # ---------------------------------- session state ------------------------------------------------------------
 
-if "started" not in st.session_state:
-    st.session_state.started = True
+if "board" not in st.session_state:
     st.session_state.board = init_board()
     shuffle_board(st.session_state.board)
 
